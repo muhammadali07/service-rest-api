@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>API Data Wilayah Indonesia</title>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 20px;
+    }
+    h1 {
+        text-align: center;
+    }
+    #provinces {
+        margin-top: 20px;
+    }
+    #provinces table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+    #provinces th, #provinces td {
+        border: 1px solid #ddd;
+        padding: 8px;
+        text-align: left;
+    }
+    #provinces th {
+        background-color: #f2f2f2;
+    }
+</style>
+</head>
+<body>
+
+<h1>Data Wilayah Indonesia</h1>
+
+<div id="provinces"></div>
+
+
+<script>
+    // Fetch data from the API
+    fetch('https://www.emsifa.com/api-wilayah-indonesia/api/provinces.json')
+    .then(response => response.json())
+    .then(data => {
+        // Create HTML table to display the data
+        let table = '<table>';
+        table += '<tr><th>ID</th><th>Name</th></tr>';
+        data.forEach(province => {
+            table += `<tr><td>${province.id}</td><td>${province.name}</td></tr>`;
+        });
+        table += '</table>';
+        
+        // Insert the table into the div
+        document.getElementById('provinces').innerHTML = table;
+    })
+    .catch(error => console.error('Error fetching data:', error));
+</script>
+
+</body>
+</html>
