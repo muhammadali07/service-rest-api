@@ -12,6 +12,10 @@ class DataDiri(BaseModel):
     age : int
     asal : str
 
+class LoginUserWeb(BaseModel):
+    username: str
+    password: str
+
 
 app = FastAPI()
 
@@ -20,6 +24,47 @@ app = FastAPI()
 def read_root():
     return {"Hello": "World"}
 
+
+@app.post("/login")
+async def login_user(request: LoginUserWeb):
+    print(request)
+    if request.username == 'ali' and request.password == "123":
+        resp = {
+            "status_code": "00",
+            "message": "success",
+            "data": {
+                "username": request.username,
+                "password": request.password
+            }
+        }
+        return resp
+    else:
+        resp = {
+            "status_code": "02",
+            "message": "gagal",
+            "data": {}
+        }
+        return resp
+    
+@app.get("/tiket")
+async def tiketFlight():
+    resp = {
+        "status_code": "00",
+        "message": "success",
+        "data": [
+            {
+                "provider": "etihad",
+                "price": 1500000
+            },
+            {
+                "provider": "qatar",
+                "price": 2070000
+            }
+
+            ]
+    }
+    return resp
+        
 
 @app.get("/namaku/{name}") # path parameter
 def read_item(name: str):
