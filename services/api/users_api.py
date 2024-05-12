@@ -12,7 +12,7 @@ async def registrationNewAccount(
     request: registerAccount,
     db: AsyncSession = Depends(get_async_session)
 ):
-    outResponse, err = await users_app.registratioNnewAccount(request, db)
+    outResponse, err = await users_app.registrationNewAccount(request, db)
     if err != None:
         return respOutCustom("02", f"registration failed: {err}", None)
     
