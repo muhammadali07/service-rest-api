@@ -1,6 +1,6 @@
 from schema import registerAccount, updateDataAccount, deleteDataAccount
 from model import Users
-from sqlalchemy import select, and_
+from sqlalchemy import select, and_, delete, update
 from fastapi.encoders import jsonable_encoder
 
 async def registrationNewAccount(data:registerAccount, session):
@@ -31,20 +31,18 @@ async def loginAccount(email:str, password:str, session):
 
 async def updateAccount(data:updateDataAccount , session):
     try:
-        user = session.query(Users).filter_by(username=data.username).update({Users.password: data.new_password})
-        session.commit()
-        return user
+        query = update(Users).where(Users.username == data.username).values(password = data.new_password)
+        await session.execute(query)
+        await session.commit()
+        return data, None
     except Exception as e:
-        return None
+        return None, e
 
 async def deleteAccount(data: deleteDataAccount, session):
     try:
-        user = session.query(Users).filter_by(username=data.username).delete()
-        if user:
-            session.delete(user)
-            session.commit()
-            return True
-        else:
-            return False
+        query = delete(Users).where(Users.username == data.username)
+        await session.execute(query)
+        await session.commit()
+        return data, None
     except Exception as e:
-        return False
+        return None, e

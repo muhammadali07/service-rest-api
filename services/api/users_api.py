@@ -34,7 +34,7 @@ async def updateAccount(
     request: updateDataAccount,
     db: AsyncSession = Depends(get_async_session)
 ):
-    outResponse, err = await users_app.updateAccount(request.dict(), db)
+    outResponse, err = await users_app.updateAccount(request, db)
     if err != None:
         return respOutCustom("02", f"update failed: {err}", None)
     

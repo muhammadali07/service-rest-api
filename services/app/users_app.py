@@ -2,7 +2,7 @@ import datastore
 
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from schema import registerAccount, loginUserAccount
+from schema import registerAccount, loginUserAccount, updateDataAccount
 
 
 async def registrationNewAccount(data: registerAccount, db: AsyncSession):
@@ -37,12 +37,14 @@ async def loginAccount(data: loginUserAccount, db: AsyncSession):
         except Exception as e:
             return None, e
 
-async def updateAccount(data: dict, db: AsyncSession):
+async def updateAccount(data: updateDataAccount, db: AsyncSession):
     async with db as session:
         try:
             # Implement update logic here
-            res, err = datastore.updateAccount()
-            await session.commit()
+            res, err = await datastore.updateAccount(data, session)
+            if err != None:
+                raise Exception(err)
+            
             return "Account updated successfully", None
         except Exception as e:
             return None, e
@@ -50,8 +52,9 @@ async def updateAccount(data: dict, db: AsyncSession):
 async def deleteAccount(username: str, db:AsyncSession):
     async with db as session:
         try:
-            res, err = datastore.deleteAccount(username, db)
-            await session.commit()
+            res, err = await datastore.deleteAccount(username, session)
+            if err != None:
+                raise Exception(err)
             return "Account deleted successfully", None
         except Exception as e:
             return None, e
