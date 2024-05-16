@@ -50,3 +50,18 @@ async def deleteAccount(
         return respOutCustom("02", f"delete failed: {err}", None)
     
     return respOutCustom("00", "success", outResponse)
+
+
+@router.get("/get-list-acount")
+async def getListAccount(
+    page: int = 0,
+    limit: int = 0,
+    keyword: str = "",
+    db: AsyncSession = Depends(get_async_session)
+):
+    # outResponse, err = await users_app.deleteAccount(username, db)
+    # if err != None:
+    #     return respOutCustom("02", f"delete failed: {err}", None)
+    outResponse = ""
+    
+    return respOutCustom("00", "success", outResponse)
